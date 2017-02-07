@@ -22,6 +22,27 @@ int find_count_of_char(const char *str, char ch){
 	}while(find_ptr != NULL);
 	return times;
 }
+int find_count_of_words(const char *str){
+	int words=0, i=0;
+	for(i=0; str[i] != '\0'; i++){
+		if( str[i] == ' ' || str[i] == '\n' || str[i]== '\r' ){
+			words+=1;
+			while(str[i]==' ' || str[i] == '\n' || str[i]== '\r'){
+				i++;
+			}
+		}
+	}
+	return words;
+}
+int find_count_of_lines(const char *str){
+	int liness=0, i=0;
+	for(i=0; str[i] != '\0'; i++){
+		if( str[i] == '\n' ){
+			liness+=1;
+		}
+	}
+	return liness;
+}
 int txt_file_number_of_char(FILE *fp, char ch){
 	int lines=0;
 	char buffer[1024]={0x00};
@@ -46,9 +67,9 @@ int txt_file_wc(FILE *fp, int *linesp, int *wordsp, int *charsp){
 		memset(buffer, 0x00, sizeof(buffer));
 		bytes = fread(buffer, sizeof(char), sizeof(buffer)-1, fp);
 		if(bytes > 0){
-			lines += find_count_of_char(buffer, '\n');
+			lines += find_count_of_lines(buffer);
 			if(is_non_blank_line(buffer)){
-				words += find_count_of_char(buffer, ' ') + find_count_of_char(buffer, '\n');
+				words += find_count_of_words(buffer) ;
 			}
 			chars += bytes;
 		}
@@ -66,7 +87,7 @@ int main(int argc, char *argv[]){
 	printf("%d %d\n", number_of_lines, number_of_words);
 	int lines, words, chars;
 	txt_file_wc(fp, &lines, &words, &chars);
-	printf(" %d %d %d\n", lines, words, chars);
+	printf("\t%d\t%d\t%d\n", lines, words, chars);
 	fclose(fp);
 	return 0;
 }
