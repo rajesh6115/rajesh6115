@@ -44,9 +44,11 @@ int find_largest_word(const char *str, char result[]){
 
 int main(int argc, char *argv[]){
 	char word[256]={0x00};
-	//find_largest_word("you were welcomes", word);
+	if(argc != 2){
+		fprintf(stderr, "USAGE: %s <string>\n", argv[0]);
+		return -1;
+	}
 	find_largest_word(argv[1], word);
 	printf("%s\n", word);
-	//printf("%s\n",largest_word("you were welcomes"));
 	return 0;
 }
